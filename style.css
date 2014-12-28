@@ -1,0 +1,83 @@
+
+html,
+body{
+	padding: 1em;
+	background:#ecf0f1;
+	font-family: Helvetica;	
+}
+
+svg{
+	margin-top: 1em;
+	background: #ecf0f1;
+	border-top: 1px solid #f1c40f;
+	border-top: none;
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+
+h2, p, a{
+	color: #333!important;
+	text-align: left;
+}
+
+text, 
+.tick text{
+	fill:  #333!important;
+}
+
+p, 
+text{
+	font-size: 0.75em!important;
+}
+
+#reorder{
+	background: #333;
+	color: #ecf0f1!important;
+	display: inline-block;
+	padding: 0.5em;
+	font-size: 0.75em!important;
+	border: 1px solid  #333;
+}
+
+/* focus / active state for keyboard a11y */
+#reorder:focus,
+#reorder:active,
+#reorder:hover{
+	background: #ecf0f1!important; 
+	color: #333!important;
+	border: 1px solid #333!important;
+}
+
+
+.axis line {
+    stroke: #ecf0f1;
+    shape-rendering: crispEdges;
+}
+
+.axis path{
+	fill: none;
+    stroke: #ecf0f1;
+    shape-rendering: crispEdges;
+   
+}
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+.axisLabel{
+	font-size: 10px;
+}
+
+#Sun,
+.axis .tick:first-child{
+	display: none!important;
+}
+
+
+@media only screen and (max-width : 400px){
+	text{
+		font-size: 0.75em !important;
+	}	
+}
