@@ -45,6 +45,8 @@ var visualise = function(planetaryData, height){
 		}
 	}
 		
+	
+	
 	radiusScale = d3.scale.linear()
 		.domain([d3.min(radiuses),d3.max(radiuses)])
 		.range([d3.min(radiuses)/1500,d3.max(radiuses)/1500]);
@@ -71,10 +73,8 @@ var visualise = function(planetaryData, height){
 				return d.Planet;
 			}
 			
-		})
-		.on("click", function() {
-			sort();
 		});
+	
 	
 	
 	labels = solarSystem.selectAll("text")
@@ -101,9 +101,30 @@ var visualise = function(planetaryData, height){
 			"fill": "#333",
 			"text-anchor": "middle"
 		});
-		
+	
+
+	// give Saturn its rings, represented by a rect. 
+	saturnRings = solarSystem.select("#Saturn")
+		.append("rect")
+		.classed("saturnRings",true)
+		.attr({
+			"x": function(d,i){
+				return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+				
+			},
+			"y": 88,
+			"rx":30, 
+			"ry":30,
+			"fill":"#333",
+			"height":5,
+			"width": function(){
+				 return radiusScale(saturn["Equatorial radius (KM)"]) * 3.1 ;
+
+			}});
+
 		
 		var orderOfAppearance = true;
+		
 		var sort = function(){
 
 			planets
@@ -139,8 +160,32 @@ var visualise = function(planetaryData, height){
 						return ((width * 0.99) / radiuses.length) * i + 50;
 					}
 				});
-					
 				
+			saturnRings
+				.sort(function(a, b) {
+					if(orderOfAppearance){
+						return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);		
+					}
+					else{
+						return d3.ascending(a["Mean distance from Sun (AU)"], b["Mean distance from Sun (AU)"]);	
+					}
+					
+					
+				})
+				.transition()
+				.duration(1500)
+				.attr({
+					"x": function(d,i){
+						if(orderOfAppearance){
+							return ((width * 0.99) / radiuses.length)  - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+						}
+						else{
+							return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+						}				
+					}
+				});
+				
+		
 			orderOfAppearance = !orderOfAppearance;
 		};
 		
