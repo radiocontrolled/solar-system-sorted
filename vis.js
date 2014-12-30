@@ -112,7 +112,7 @@ var visualise = function(planetaryData, height){
 				return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
 				
 			},
-			"y": 88,
+			"y": 86,
 			"rx":30, 
 			"ry":30,
 			"fill":"#333",

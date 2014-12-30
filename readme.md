@@ -1,6 +1,6 @@
 # It's all relative 
 
-A D3.js visualisation sorting the planets of the Solar System by their relative size. 
+Sorting the planets of the Solar System by their relative size and by their order of appearance. 
 
 A 'reorder' link provides a keyboard-accessible way of sorting the planets. 
 
