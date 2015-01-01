@@ -2,6 +2,8 @@
 
 Sorting the planets of the Solar System by their relative size and by their order of appearance. 
 
+* Demo: <a href="http://radiocontrolled.github.io/it-s-all-relative/">http://radiocontrolled.github.io/it-s-all-relative</a>
+
 A 'reorder' link provides a keyboard-accessible way of sorting the planets. 
 
 * Source: 

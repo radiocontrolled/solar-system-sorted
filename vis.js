@@ -65,7 +65,6 @@ var visualise = function(planetaryData, height){
 		});
 	
 	
-	
 	labels = solarSystem.selectAll("g.planetName")
 		.data(planetaryData)
 		.enter()
@@ -198,6 +197,42 @@ sortAscending = function(){
 };
 
 var resetPlanets = function(){
+	planets
+		.sort(function(a,b){
+			return d3.ascending(a["Mean distance from Sun (AU)"], b["Mean distance from Sun (AU)"]);	
+		})
+		.transition()
+		.duration(1500)
+		.select("circle")
+		.attr("cx", function(d,i){
+			return ((width * 0.99) / radiuses.length) * i + 50;	
+		});
+	
+	saturnRings
+		.sort(function(a, b) {
+			return d3.ascending(a["Mean distance from Sun (AU)"], b["Mean distance from Sun (AU)"]);		
+		})
+		.transition()
+		.duration(1500)
+		.attr({
+			"x": function(d,i){
+				return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+			}
+		});
+
+	labels
+		.sort(function(a, b) {
+			return d3.ascending(a["Mean distance from Sun (AU)"], b["Mean distance from Sun (AU)"]);		
+		})
+		.transition()
+		.duration(1500)
+		.select("text")
+		.attr({
+			"x": function(d,i){
+				return ((width * 0.99) / radiuses.length) * i + 50;
+			}
+		});
+		
 	
 };
 
@@ -230,7 +265,7 @@ d3.json("planets.json", function(error, data) {
 });
 
 /* 
- * events listeners
+ * event listeners
  */
 
 // click 
