@@ -14,8 +14,12 @@ var height,
 	labels,
 	planets,
 	saturnRings,
-	svgAxis,
-	orderButton = document.getElementById("reorder");
+	sort,
+	descending = document.getElementById("descending"),
+	sortDescending,
+	ascending = document.getElementById("ascending"),
+	sortAscending,
+	reset = document.getElementById("reset");
 	
 
 var getViewportDimensions = function(){	
@@ -36,34 +40,19 @@ solarSystem = d3.selectAll("#planets")
 
 var visualise = function(planetaryData, height){
 	
-	for(var key in planetaryData){
-		if(planetaryData.hasOwnProperty(key)){
-			radiuses.push(planetaryData[key]["Equatorial radius (KM)"]);
-			if(planetaryData[key].Planet == "Saturn"){
-				saturn = planetaryData[key];
-			}
-		}
-	}
-		
-	
-	
-	radiusScale = d3.scale.linear()
-		.domain([d3.min(radiuses),d3.max(radiuses)])
-		.range([d3.min(radiuses)/1500,d3.max(radiuses)/1500]);
-	
-	planets = solarSystem.selectAll("circle")
+	planets = solarSystem.selectAll("g.planet")
 		.data(planetaryData)
 		.enter()
-		
 		.append("g")
-		.append("circle")
+		.classed("planet", true);
+	
+	planets.append("circle")
 		.attr({
 			"r": function(d) {
 				return radiusScale(d["Equatorial radius (KM)"]);
 			},
 			"cy": function(d){
 				return 90;
-				
 			},
 			"cx": function(d,i){
 				return ((width * 0.99) / radiuses.length) * i + 50;
@@ -77,16 +66,19 @@ var visualise = function(planetaryData, height){
 	
 	
 	
-	labels = solarSystem.selectAll("text")
+	labels = solarSystem.selectAll("g.planetName")
 		.data(planetaryData)
 		.enter()
 		.append("g")
+		.classed("planetName", true)
 		.attr({
 			"id": function(d){
 				return d.Planet;
 			},
 			"transform": "translate(0,5)"
-		})
+		});
+		
+	labels
 		.append("text")
 		.text(function(d){
 			return d.Planet;
@@ -110,7 +102,6 @@ var visualise = function(planetaryData, height){
 		.attr({
 			"x": function(d,i){
 				return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
-				
 			},
 			"y": 86,
 			"rx":30, 
@@ -121,106 +112,152 @@ var visualise = function(planetaryData, height){
 				 return radiusScale(saturn["Equatorial radius (KM)"]) * 3.1 ;
 
 			}});
-
+};
 		
-		var orderOfAppearance = true;
-		
-		var sort = function(){
-
-			planets
-				.sort(function(a, b) {
-					if(orderOfAppearance){
-						return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);		
-					}
-					else{
-						return d3.ascending(a["Mean distance from Sun (AU)"], b["Mean distance from Sun (AU)"]);	
-					}
-					
-					
-				})
-				.transition()
-				.duration(1500)
-				.attr("cx", function(d,i){
-					return ((width * 0.99) / radiuses.length) * i + 50;	
-				});
-			
-			labels
-				.sort(function(a, b) {
-					if(orderOfAppearance){
-						return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);
-					}
-					else{
-						return d3.ascending(a["Mean distance from Sun (AU)"], b["Mean distance from Sun (AU)"]);	
-					}
-				})
-				.transition()
-				.duration(1500)
-				.attr({
-					"x": function(d,i){
-						return ((width * 0.99) / radiuses.length) * i + 50;
-					}
-				});
-				
-			saturnRings
-				.sort(function(a, b) {
-					if(orderOfAppearance){
-						return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);		
-					}
-					else{
-						return d3.ascending(a["Mean distance from Sun (AU)"], b["Mean distance from Sun (AU)"]);	
-					}
-					
-					
-				})
-				.transition()
-				.duration(1500)
-				.attr({
-					"x": function(d,i){
-						if(orderOfAppearance){
-							return ((width * 0.99) / radiuses.length)  - (radiusScale(saturn["Equatorial radius (KM)"]/3));
-						}
-						else{
-							return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
-						}				
-					}
-				});
-				
-		
-			orderOfAppearance = !orderOfAppearance;
-		};
-		
-		// mousepress listener
-		orderButton.addEventListener("click", sort);
-		
-		// spacebar or enter event
-		orderButton.addEventListener("keydown", function(e){
-			var key = e.which || e.keyCode;
-			if(key == 13 || key == 32){
-				sort();
+sortDescending = function(){
+	
+	
+	planets
+		.sort(function(a,b){
+			return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);	
+		})
+		.transition()
+		.duration(1500)
+		.select("circle")
+		.attr("cx", function(d,i){
+			return ((width * 0.99) / radiuses.length) * i + 50;	
+		});
+	
+	
+	saturnRings
+		.sort(function(a, b) {
+			return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);					
+		})
+		.transition()
+		.duration(1500)
+		.attr({
+			"x": function(d,i){
+				return ((width * 0.99) / radiuses.length)  - (radiusScale(saturn["Equatorial radius (KM)"]/3));			
 			}
 		});
-		   
+	
+
+	labels
+		.sort(function(a, b) {
+			return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);		
+		})
+		.transition()
+		.duration(1500)
+		.select("text")
+		.attr({
+			"x": function(d,i){
+				return ((width * 0.99) / radiuses.length) * i + 50;
+			}
+		});
+	
 };
 
+
+
+sortAscending = function(){
+	planets
+		.sort(function(a,b){
+			return d3.ascending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);	
+		})
+		.transition()
+		.duration(1500)
+		.select("circle")
+		.attr("cx", function(d,i){
+			return ((width * 0.99) / radiuses.length) * i + 50;	
+		});
+	
+	saturnRings
+		.sort(function(a, b) {
+			return d3.ascending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);		
+		})
+		.transition()
+		.duration(1500)
+		.attr({
+			"x": function(d,i){
+				return ((width * 0.99) / radiuses.length) * 6 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+			}
+		});
+
+	labels
+		.sort(function(a, b) {
+			return d3.ascending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);		
+		})
+		.transition()
+		.duration(1500)
+		.select("text")
+		.attr({
+			"x": function(d,i){
+				return ((width * 0.99) / radiuses.length) * i + 50;
+			}
+		});
+};
+
+var resetPlanets = function(){
+	
+};
+
+// request data 
 d3.json("planets.json", function(error, data) {
 
   if(data) {
-  	
  	 planetaryData = data; 
  	 
+ 	 for(var key in planetaryData){
+		if(planetaryData.hasOwnProperty(key)){
+			radiuses.push(planetaryData[key]["Equatorial radius (KM)"]);
+			if(planetaryData[key].Planet == "Saturn"){
+				saturn = planetaryData[key];
+			}
+		}
+	}
+	
+	radiusScale = d3.scale.linear()
+		.domain([d3.min(radiuses),d3.max(radiuses)])
+		.range([d3.min(radiuses)/1500,d3.max(radiuses)/1500]);
+ 	 
  	 visualise(planetaryData, height);
-  
   }
   
   else if(error) {
-  	
   	console.log(error);
-  
   }
- 
-
+  
 });
 
+/* 
+ * events listeners
+ */
 
+// click 
+descending.addEventListener("click", sortDescending);
+ascending.addEventListener("click", sortAscending);
+reset.addEventListener("click", resetPlanets);
 
+	
+// keyboard 
+descending.addEventListener("keydown", function(e){
+	var key = e.which || e.keyCode;
+	if(key == 13 || key == 32){
+		sortDescending();
+	}
+});
 
+ascending.addEventListener("keydown", function(e){
+	var key = e.which || e.keyCode;
+	if(key == 13 || key == 32){
+		sortAscending();
+	}
+});
+		
+reset.addEventListener("keydown", function(e){
+	var key = e.which || e.keyCode;
+	if(key == 13 || key == 32){
+		resetPlanets();
+	}
+});
+		

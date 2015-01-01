@@ -32,7 +32,9 @@ text{
 	font-size: 0.75em!important;
 }
 
-#reorder{
+#descending, 
+#ascending,
+#reset{
 	background: #333;
 	color: #ecf0f1!important;
 	display: inline-block;
@@ -42,9 +44,15 @@ text{
 }
 
 /* focus / active state for keyboard a11y */
-#reorder:focus,
-#reorder:active,
-#reorder:hover{
+#descending:focus,
+#descending:active,
+#descending:hover,
+#ascending:focus,
+#ascending:active,
+#ascending:hover,
+#reset:focus,
+#reset:active,
+#reset:hover{
 	background: #ecf0f1!important; 
 	color: #333!important;
 	border: 1px solid #333!important;
