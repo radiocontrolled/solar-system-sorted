@@ -27,9 +27,10 @@ text,
 	fill:  #333!important;
 }
 
-p, 
+button, p, 
 text{
 	font-size: 0.75em!important;
+	font-family: Helvetica;	
 }
 
 #descending, 
@@ -41,9 +42,11 @@ text{
 	padding: 0.5em;
 	font-size: 0.75em!important;
 	border: 1px solid  #333;
+	
 }
 
 /* focus / active state for keyboard a11y */
+.selected,
 #descending:focus,
 #descending:active,
 #descending:hover,
@@ -56,8 +59,16 @@ text{
 	background: #ecf0f1!important; 
 	color: #333!important;
 	border: 1px solid #333!important;
+	outline: 0; /* remove unsightly outline.. */
+	transition: all 0.25s;
+	
 }
 
+#descending.selected,
+#ascending.selected,
+#reset.selected{
+	color: #333!important;
+}
 
 .axis line {
     stroke: #ecf0f1;

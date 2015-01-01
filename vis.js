@@ -40,6 +40,8 @@ solarSystem = d3.selectAll("#planets")
 
 var visualise = function(planetaryData, height){
 	
+	reset.classList.add("selected");
+	
 	planets = solarSystem.selectAll("g.planet")
 		.data(planetaryData)
 		.enter()
@@ -114,8 +116,7 @@ var visualise = function(planetaryData, height){
 };
 		
 sortDescending = function(){
-	
-	
+		
 	planets
 		.sort(function(a,b){
 			return d3.descending(a["Equatorial radius (KM)"], b["Equatorial radius (KM)"]);	
@@ -264,20 +265,42 @@ d3.json("planets.json", function(error, data) {
   
 });
 
+/* helper function to remove selected classes */ 
+var findSelected = function(){
+	var all = document.querySelectorAll(".selected");
+	for(var i = 0; i < all.length; i++){
+		all[i].classList.remove("selected");
+	}
+};
+
 /* 
  * event listeners
  */
 
 // click 
-descending.addEventListener("click", sortDescending);
-ascending.addEventListener("click", sortAscending);
-reset.addEventListener("click", resetPlanets);
+descending.addEventListener("click", function(){
+	findSelected();
+	this.classList.add("selected");
+	sortDescending();	
+});
+ascending.addEventListener("click", function(){
+	findSelected();
+	this.classList.add("selected");
+	sortAscending();
+});
+reset.addEventListener("click", function(){
+	findSelected();
+	this.classList.add("selected");
+	resetPlanets();
+});
 
 	
 // keyboard 
 descending.addEventListener("keydown", function(e){
 	var key = e.which || e.keyCode;
 	if(key == 13 || key == 32){
+		findSelected();
+		this.classList.add("selected");
 		sortDescending();
 	}
 });
@@ -285,6 +308,8 @@ descending.addEventListener("keydown", function(e){
 ascending.addEventListener("keydown", function(e){
 	var key = e.which || e.keyCode;
 	if(key == 13 || key == 32){
+		findSelected();
+		this.classList.add("selected");
 		sortAscending();
 	}
 });
@@ -292,7 +317,11 @@ ascending.addEventListener("keydown", function(e){
 reset.addEventListener("keydown", function(e){
 	var key = e.which || e.keyCode;
 	if(key == 13 || key == 32){
+		findSelected();
+		this.classList.add("selected");
 		resetPlanets();
 	}
 });
+
+
 		
