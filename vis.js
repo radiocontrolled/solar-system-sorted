@@ -23,8 +23,11 @@ var height,
 	
 
 var getViewportDimensions = function(){	
-	width = document.getElementById("planets").offsetWidth;	
+	// for now, use a fixed width.. 
+	// width = document.getElementById("planets").offsetWidth;	
+	width = 700;
 	height = window.innerHeight/2; 
+	
 }();
 
 
@@ -102,7 +105,8 @@ var visualise = function(planetaryData, height){
 		.classed("saturnRings",true)
 		.attr({
 			"x": function(d,i){
-				return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+				//- (radiusScale(saturn["Equatorial radius (KM)"]/15)
+				return ((width / radiuses.length) * 5) * 0.999;
 			},
 			"y": 86,
 			"rx":30, 
@@ -137,7 +141,8 @@ sortDescending = function(){
 		.duration(1500)
 		.attr({
 			"x": function(d,i){
-				return ((width * 0.99) / radiuses.length)  - (radiusScale(saturn["Equatorial radius (KM)"]/3));			
+			//	return ((width * 0.99) / radiuses.length)  - (radiusScale(saturn["Equatorial radius (KM)"]/3));		
+			return (width / radiuses.length) + 1;	
 			}
 		});
 	
@@ -179,7 +184,8 @@ sortAscending = function(){
 		.duration(1500)
 		.attr({
 			"x": function(d,i){
-				return ((width * 0.99) / radiuses.length) * 6 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+			//	return ((width * 0.99) / radiuses.length) * 6 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+			return ((width / radiuses.length) * 6) * 0.995;
 			}
 		});
 
@@ -217,7 +223,8 @@ var resetPlanets = function(){
 		.duration(1500)
 		.attr({
 			"x": function(d,i){
-				return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+				//return ((width * 0.99) / radiuses.length) * 5 - (radiusScale(saturn["Equatorial radius (KM)"]/3));
+				return ((width / radiuses.length) * 5) * 0.999;
 			}
 		});
 
@@ -254,7 +261,9 @@ d3.json("planets.json", function(error, data) {
 	
 	radiusScale = d3.scale.linear()
 		.domain([d3.min(radiuses),d3.max(radiuses)])
-		.range([d3.min(radiuses)/1500,d3.max(radiuses)/1500]);
+		.range([d3.min(radiuses)/2000,d3.max(radiuses)/2000]);
+ 	 
+ 
  	 
  	 visualise(planetaryData, height);
   }
